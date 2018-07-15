@@ -1,0 +1,912 @@
+#{extends 'main.html' /}
+#{set title:'Creer un nouveau logement' /}
+#{set 'moreStyles'}
+*{<link href="@{'/public/css/front/main4a50.css'}" rel="stylesheet"/>}*
+<style>
+    .select2-search__field {
+        width: auto !important;
+    }
+</style>
+#{/set}
+#{set 'moreScripts'}
+    #{script 'hotel.js'/}
+    #{script '../bower_components/slick-carousel/slick/slick.min.js'/}
+    #{script '../bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js'/}
+    #{script '../bower_components/jquery-bar-rating/dist/jquery.barrating.min.js'/}
+<script>
+    var map;
+    var geocoder;
+    var address;
+    function initMap() {
+        geocoder = new google.maps.Geocoder();
+        // Create a map object and specify the DOM element for display.
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 18
+        });
+    }
+
+    function fillMapWithAdress() {
+        address = $("input[name='housingForm.housing.address']").val();
+        if (address !== null && typeof address !== 'undefined') {
+            geocoder.geocode({'address': address}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    }
+
+    $("a[class='step-trigger'][href='#stepContent4']").on('click', function () {
+        fillMapWithAdress();
+        google.maps.event.trigger(map, "resize");
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoDQRDIM8pB_mitmGA77Gebnd6Zg-THrA&callback=initMap"
+        async defer></script>
+#{/set}
+
+
+<div class="row">
+    <div class="col-sm-12 element-wrapper">
+        <form action="@{Housings.update()}" method="POST" id="hotel-form">
+            <div class="steps-w">
+                <div class="step-triggers">
+                    <a class="step-trigger active" href="#stepContent1">Identification</a>
+                    <a class="step-trigger" href="#stepContent2">Contacts</a>
+                    <a class="step-trigger" href="#stepContent3">Chambres</a>
+                    <a class="step-trigger" href="#stepContent4">Proximités et modes d'accès</a>
+                    <a class="step-trigger" href="#stepContent5">Partenariat</a>
+                </div>
+                <div class="step-contents">
+                    <div class="step-content active" id="stepContent1">
+                        <h6 class="element-header">Entrez les informations du logement</h6>
+                    #{if housingForm?.housing?.id != null}
+                        #{field 'housingForm.housing.id'}
+                            <input type="hidden" value="${housingForm?.housing?.id}" id="${field.id}"
+                                   name="${field.name}">
+                        #{/field}
+                    #{/if}
+                        <div class="row">
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.name'}
+                                <div class="form-group">
+                                    <label for="">Nom</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le nom de l'hebergement" type="text"
+                                           id="${field.id}"
+                                           name="${field.name}"
+                                           value="${housingForm.housing?.name}"
+                                           required>
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.city'}
+                                <div class="form-group">
+                                    <label for="">Ville</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez la ville de l'hebergement" type="text"
+                                           id="${field.id}"
+                                           name="${field.name}"
+                                           value="${housingForm.housing?.city}"
+                                           required>
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.address'}
+                                <div class="form-group">
+                                    <label for="">Adresse</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez l'addresse de l'hebergement" type="text"
+                                           id="${field.id}"
+                                           name="${field.name}"
+                                           value="${housingForm.housing?.address}"
+                                           required>
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housingType'}
+                                <input type="hidden" name="housingTypedisplay"
+                                       value="${housingForm.housing?.housingType?.id}">
+                                <div class="form-group">
+                                    <label for="">Type de logement</label>
+                                    <select required="required" class="form-control"
+                                            id="${field.id}" name="${field.name}">
+                                        <option value="">Selectionner un type de logement</option>
+                                        #{list housingTypeList}
+                                            <option value="${_.id}">${_.name}</option>
+                                        #{/list}
+                                    </select>
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.postalCode'}
+                                <div class="form-group">
+                                    <label for="">Code postal</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le code postal de l'hebergement"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.postalCode}"
+                                           type="text" required>
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.phone'}
+                                <div class="form-group">
+                                    <label for="">Telephone</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le telephone de l'hebergement"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.phone}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.fax'}
+                                <div class="form-group">
+                                    <label for="">Fax</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le fax de l'hebergement"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.fax}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-6">
+                            #{field 'housingForm.housing.observation'}
+                                <div class="form-group">
+                                    <label for="">Observation</label>
+                                    <textarea class="form-control" rows="3"
+                                              id="${field.id}" name="${field.name}"
+                                              value="${housingForm.housing?.observation}">
+                                    </textarea>
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="form-buttons-w text-right">
+                            <a class="btn btn-primary step-trigger-btn"
+                               href="#stepContent2">
+                                Continuer
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-content" id="stepContent2">
+                        <h6 class="element-header">Entrez les informations du gérant</h6>
+                        <div class="row">
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.manager.managerLastname'}
+                                <div class="form-group">
+                                    <label for="">Nom</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le nom du gerant"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.manager?.managerLastname}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.manager.managerFirstName'}
+                                <div class="form-group">
+                                    <label for="">Prénom(s)</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le(s) prenom(s)"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.manager?.managerFirstName}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.manager.managerPhone'}
+                                <div class="form-group">
+                                    <label for="">Télephone</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le télephone"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.manager?.managerPhone}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.manager.managerTel'}
+                                <div class="form-group">
+                                    <label for="">Ligne fixe</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez la ligne fixe"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.manager?.managerTel}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.manager.managerFax'}
+                                <div class="form-group">
+                                    <label for="">Fax</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le fax"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.manager?.managerFax}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.manager.managerAddress'}
+                                <div class="form-group">
+                                    <label for="">Addresse</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez l'addresse"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.manager?.managerAddress}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <h6 class="element-header">Entrez les informations du contact principal</h6>
+                        <div class="row">
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.mainContact.mainContactFirstName'}
+                                <div class="form-group">
+                                    <label for="">Nom</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le nom du gerant"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.mainContact?.mainContactFirstName}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.mainContact.mainContactLastname'}
+                                <div class="form-group">
+                                    <label for="">Prénom(s)</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le(s) prenom(s)"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.mainContact?.mainContactLastname}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.mainContact.mainContactPhone'}
+                                <div class="form-group">
+                                    <label for="">Télephone</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le télephone"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${field.value}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.mainContact.mainContactTel'}
+                                <div class="form-group">
+                                    <label for="">Ligne fixe</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez la ligne fixe"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.mainContact?.mainContactTel}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.mainContact.mainContactFax'}
+                                <div class="form-group">
+                                    <label for="">Fax</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez le fax"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.mainContact?.mainContactFax}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                            <div class="col-lg-4">
+                            #{field 'housingForm.housing.mainContact.mainContactAddress'}
+                                <div class="form-group">
+                                    <label for="">Addresse</label>
+                                    <input class="form-control"
+                                           placeholder="Entrez l'addresse"
+                                           id="${field.id}" name="${field.name}"
+                                           value="${housingForm.housing?.mainContact?.mainContactAddress}"
+                                           type="text">
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div class="form-buttons-w text-right">
+                            <a class="btn btn-primary step-trigger-btn" href="#stepContent1">
+                                Précedent
+                            </a>
+                            <a class="btn btn-primary step-trigger-btn" href="#stepContent3">
+                                Continue
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-content" id="stepContent3">
+                        <h6 class="element-header">Enregistrer les chambres</h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Chambres</label>
+                                    <select class="form-control"
+                                            type="text"
+                                            name="roomType"
+                                            id="roomType">
+                                        <option value="0">Selectionner</option>
+                                    #{list roomTypesList}
+                                        <option value="${_.name}">${_.name}</option>
+                                    #{/list}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Prix</label>
+                                    <input class="form-control"
+                                           id="roomPrice"
+                                           name="roomPrice"
+                                           placeholder="Prix de la chambre" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group" style="position: relative; top: 26px;">
+                                    <label for=""> Commodités</label>
+                                    <select class="form-control select3"
+                                            name="commodity" id="commodity"
+                                            multiple="true">
+                                    #{list commodityList}
+                                        <option value="${_.label}">${_.label}</option>
+                                    #{/list}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="">Nombre</label>
+                                    <input class="form-control"
+                                           id="roomNumber"
+                                           name="roomNumber"
+                                           placeholder="Nombre des chambres" type="number">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <a class="btn btn-outline-info" style="position: relative; top: 26px;"
+                                   id="saveRoom">Ajouter une chambre</a>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <h6 class="element-header">Liste des chambres</h6>
+                        <div class="controls-above-table">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <a class="btn btn-sm btn-outline-info"
+                                       id="update-commodity-to-room">
+                                        Selectionner une chambre pour la modifier
+                                    </a>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="hidden" id="room-help-input" value="-1">
+                                    <p id="commodity-help-box" style="color: blue;">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-hover table-striped"
+                               id="roomDetails">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Label</th>
+                                <th>Prix</th>
+                                <th>Nombre de chambres</th>
+                                <th>Commodités</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            #{list housingForm?.rooms, as:"room"}
+                            <tr>
+                                <td>
+                                    <input type="hidden"
+                                           name="housingForm.rooms[${room_index-1}].id"
+                                           class="rooms[${room_index-1}]"
+                                           value="${room.id}">
+                                    <input type="hidden"
+                                           name="housingForm.rooms[${room_index-1}].roomTypeName"
+                                           class="rooms[${room_index-1}]"
+                                           value="${room.roomTypeName}">
+                                    <input type="hidden"
+                                           class="rooms[${room_index-1}]"
+                                           name="housingForm.rooms[${room_index-1}].price"
+                                           value="${room.price}">
+                                    <input type="hidden"
+                                           class="rooms[${room_index-1}]"
+                                           name="housingForm.rooms[${room_index-1}].commodityString"
+                                           value="${room.commodityString}">
+                                    <input type="hidden"
+                                           class="rooms[${room_index-1}]"
+                                           name="housingForm.rooms[${room_index-1}].number"
+                                           value="${room.number}">
+                                    <input type="checkbox"
+                                           name="rooms[${room_index-1}]"
+                                           class="rooms" id="${room_index-1}">
+                                </td>
+                                <td>${room.roomTypeName}</td>
+                                <td>${room.price}</td>
+                                <td>${room.number}</td>
+                                <td id="commodityRow">
+                                </td>
+                            </tr>
+                            #{/list}
+                            </tbody>
+                        </table>
+                        <div class="form-buttons-w text-right">
+                            <a class="btn btn-primary step-trigger-btn" href="#stepContent2">
+                                Précedent
+                            </a>
+                            <a class="btn btn-primary step-trigger-btn" href="#stepContent4">
+                                Continue
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-content" id="stepContent4">
+                        <h6 class="element-header">Entrez les élements qui se trouvent a proximité de l'hotel</h6>
+                        <div class="row">
+                            <div class="col-lg-5 form-inline">
+                                <label for=""
+                                       class="mb-2 mr-sm-2 mb-sm-0">Proximités</label>
+                                <select class="form-control mb-2 mr-sm-2 mb-sm-0"
+                                        type="text"
+                                        name="proximity"
+                                        id="proximity"
+                                        required>
+                                    <option value="0">Selectionner</option>
+                                #{list proximityList}
+                                    <option value="${_.id}">${_.label}</option>
+                                #{/list}
+                                </select>
+                                <a class="btn btn-outline-info"
+                                   id="saveProximity">Enregistrer</a>
+                            </div>
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <a class="btn btn-outline-info" id="addProximity">
+                                            Ajouter une proximité
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-7 form-inline">
+                                        <div id="addProximityContainer" style="display: none;">
+                                            <label class="sr-only">Nom</label>
+                                            <input class="form-control" id="proximityLabel"
+                                                   placeholder="Nom" type="text">
+                                            <a class="btn btn-outline-info"
+                                               id="addProximityBtn">Enregistrer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered table-hover
+                                table-striped" id="proximityDetails">
+                                    <thead>
+                                    <tr>
+                                        <th>Titre</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    #{list housingForm?.proximities, as:"proximity"}
+                                    <td>
+                                        <input type="hidden"
+                                               name="housingForm.proximities[${proximity_index-1}].id"
+                                               class="proximities[${proximity_index-1}]"
+                                               value="${proximity.id}">
+                                        <input type="hidden"
+                                               name="housingForm.proximities[${proximity_index-1}].label"
+                                               class="proximities[${proximity_index-1}]"
+                                               value="${proximity.label}">
+                                    ${_.label}
+                                    </td>
+                                    #{/list}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="map" style="height: 400px; width: 100%; background-color: grey;">
+
+                                </div>
+                            </div>
+                        </div>
+                    *{                        <div class="row">
+                            <div class="col-lg-12">
+                            #{field 'housingForm.housing.route'}
+                                <div class="form-group">
+                                    <label for="">Itineraire</label>
+                                    <textarea class="form-control" rows="3"
+                                              id="${field.id}" name="${field.name}"
+                                              value="${housingForm.housing?.route}">
+                                    </textarea>
+                                </div>
+                            #{/field}
+                            </div>
+                        </div>}*
+                        <div class="form-buttons-w text-right">
+                            <a class="btn btn-primary step-trigger-btn" href="#stepContent3">
+                                Précedent
+                            </a>
+                            <a class="btn btn-primary step-trigger-btn" href="#stepContent5">
+                                Continue
+                            </a>
+                        </div>
+                    </div>
+                    <div class="step-content" id="stepContent5">
+                        <h6 class="element-header">Partenariat</h6>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Partenaire ?</label>
+                            <div class="form-check col-sm-4">
+                            #{field 'housingForm.housing.deal'}
+                                <label class="form-check-label">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           id="${field.id}" name="${field.name}"
+                                           value="true" v="0">Oui
+                                </label>
+                            #{/field}
+                            </div>
+                            <div class="form-check col-sm-4">
+                            #{field 'housingForm.housing.deal'}
+                                <label class="form-check-label">
+                                    <input class="form-check-input"
+                                           type="radio"
+                                           id="${field.id}" name="${field.name}"
+                                           value="false" v="1">Non
+                                </label>
+                            #{/field}
+                            </div>
+                        </div>
+                        <div id="partner-block" style="display: none;">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Convention ?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasContract'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasContract'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="true" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="row" id="contractRow" style="display: none;">
+                                        <div class="col-lg-4">
+                                        #{field 'housingForm.convention.startDate'}
+                                            <div class="form-group">
+                                                <label for="">Date début</label>
+                                                <input type="hidden" value="null">
+                                                <input class="single-daterange form-control"
+                                                       name="${field.name}"
+                                                       placeholder="Date de fin" id="convention_startdate"
+                                                       type="text">
+                                            </div>
+                                        #{/field}
+                                        </div>
+                                        <div class="col-lg-4">
+                                        #{field 'housingForm.convention.endDate'}
+                                            <div class="form-group">
+                                                <label for="">Date de fin</label>
+                                                <input type="hidden" value="null">
+                                                <input class="single-daterange form-control"
+                                                       name="${field.name}"
+                                                       placeholder="Date de fin" id="convention_enddate"
+                                                       type="text">
+                                            </div>
+                                        #{/field}
+                                        </div>
+                                        <div class="col-lg-4">
+                                        #{field 'housingForm.convention.conventionFileUri'}
+                                            <input type="hidden" id="${field.id}" name="${field.name}">
+                                        #{/field}
+                                            <div class="form-group">
+                                                <label for="">Fichier</label>
+                                                <input class="single-daterange form-control"
+                                                       type="file" id="conventionFileUri">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Charte relative a la sécurité
+                                            ?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasQualityCharter'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input"
+                                                       type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasQualityCharter'}
+                                            <label class="form-check-label">
+                                                <input checked="" class="form-check-input"
+                                                       type="radio" id="${field.id}" name="${field.name}"
+                                                       value="false" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                #{field 'housingForm.convention.qualityCharterFile'}
+                                    <input type="hidden" id="${field.id}" name="${field.name}">
+                                #{/field}
+                                    <div class="form-group" id="qualityCharterFileContainer" style="display: none;">
+                                        <label for="">Fichier</label>
+                                        <input class="single-daterange form-control"
+                                               type="file" id="qualityCharterFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Checklist sécurité ?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasSecurityCheckList'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input"
+                                                       type="radio" id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasSecurityCheckList'}
+                                            <label class="form-check-label">
+                                                <input checked="" class="form-check-input"
+                                                       type="radio" id="${field.id}" name="${field.name}"
+                                                       value="false" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="securityCheckListFileContainer"
+                                         style="display: none;">
+                                    #{field 'housingForm.housing.partnership.securityCheckListFile'}
+                                        <input type="hidden" id="${field.id}" name="${field.name}">
+                                    #{/field}
+                                        <label for="">Fichier</label>
+                                        <input type="hidden">
+                                        <input class="single-daterange form-control"
+                                               type="file" id="securityCheckListFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Copie du Kbis ?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasKbis'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasKbis'}
+                                            <label class="form-check-label">
+                                                <input checked="" class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="false" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="kbisFileContainer" style="display: none;">
+                                    #{field 'housingForm.housing.partnership.kbisFile'}
+                                        <input type="hidden" id="${field.id}" name="${field.name}">
+                                    #{/field}
+                                        <label for="">Fichier</label>
+                                        <input type="hidden">
+                                        <input class="single-daterange form-control"
+                                               type="file" id="kbisFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Copie autorisation d'exercer ou
+                                            carton jaune ?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasLicensing'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasLicensing'}
+                                            <label class="form-check-label">
+                                                <input checked="" class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="false" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="licensingFileContainer" style="display: none;">
+                                    #{field 'housingForm.housing.partnership.licensingFile'}
+                                        <input type="hidden" id="${field.id}" name="${field.name}">
+                                    #{/field}
+                                        <label for="">Fichier</label>
+                                        <input type="hidden">
+                                        <input class="single-daterange form-control"
+                                               type="file" id="licensingFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Copie du registre de sécurité a
+                                            jour?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasSecurityRegistry'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input"
+                                                       type="radio" id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasSecurityRegistry'}
+                                            <label class="form-check-label">
+                                                <input checked="" class="form-check-input"
+                                                       type="radio" id="${field.id}" name="${field.name}"
+                                                       value="false" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group" id="securityRegistryFileContainer"
+                                         style="display: none;">
+                                    #{field 'housingForm.housing.partnership.securityRegistryFile'}
+                                        <input type="hidden" id="${field.id}" name="${field.name}">
+                                    #{/field}
+                                        <label for="">Fichier</label>
+                                        <input type="hidden">
+                                        <input class="single-daterange form-control"
+                                               type="file" id="securityRegistryFile">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4 col-form-label">Assurance ?</label>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasInsurance'}
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="true" v="0">Oui</label>
+                                        #{/field}
+                                        </div>
+                                        <div class="form-check col-sm-4">
+                                        #{field 'housingForm.housing.partnership.hasInsurance'}
+                                            <label class="form-check-label">
+                                                <input checked="" class="form-check-input" type="radio"
+                                                       id="${field.id}" name="${field.name}"
+                                                       value="false" v="1">Non</label>
+                                        #{/field}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="row" id="insuranceRow" style="display: none;">
+                                        <div class="col-lg-4">
+                                        #{field 'housingForm.insurance.startDate'}
+                                            <div class="form-group">
+                                                <label for="">Date début</label>
+                                                <input type="hidden" value="null">
+                                                <input class="single-daterange form-control"
+                                                       name="${field.name}"
+                                                       placeholder="Date de fin" id="insurance_startdate"
+                                                       type="text">
+                                            </div>
+                                        #{/field}
+                                        </div>
+                                        <div class="col-lg-4">
+                                        #{field 'housingForm.insurance.endDate'}
+                                            <div class="form-group">
+                                                <label for="">Date de fin</label>
+                                                <input type="hidden" value="null">
+                                                <input class="single-daterange form-control"
+                                                       name="${field.name}"
+                                                       placeholder="Date de fin" id="insurance_enddate"
+                                                       type="text">
+                                            </div>
+                                        #{/field}
+                                        </div>
+                                        <div class="col-lg-4">
+                                        #{field 'housingForm.insurance.insuranceFileUri'}
+                                            <input type="hidden" id="${field.id}" name="${field.name}">
+                                        #{/field}
+                                            <div class="form-group">
+                                                <label for="">Fichier</label>
+                                                <input class="single-daterange form-control"
+                                                       type="file" id="insuranceFileUri">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-buttons-w text-right">
+                            <button class="btn btn-primary" type="submit">Finaliser l'enregistrement</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

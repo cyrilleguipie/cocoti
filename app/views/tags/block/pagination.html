@@ -1,0 +1,37 @@
+<script>
+$(function() {
+    $('.paginator').pagination({
+        prevText : 'Pr&eacute;c&eacute;dent',
+        nextText : 'Suivante',
+        currentPage : ${_page ? _page : 1},
+        items: ${_count},
+        itemsOnPage: 50,
+        cssStyle: 'light-theme',
+        onPageClick : function (pageNumber, event) {
+            var url = updateURLParameter(window.location.href, 'page', pageNumber);
+            window.location.href = url;
+        }
+    });
+});
+
+function updateURLParameter(url, param, paramVal){
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+    if (additionalURL) {
+        tempArray = additionalURL.split("&");
+        for (i=0; i<tempArray.length; i++){
+            if(tempArray[i].split('=')[0] != param){
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    }
+
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
+}
+
+</script>

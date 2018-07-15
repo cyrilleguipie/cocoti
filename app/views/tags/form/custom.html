@@ -1,0 +1,6 @@
+#{form.field field : _field, label : _label, help : _help, type : _type}
+    #{doBody /}
+    #{if _field?.error}
+        <span class="help-inline">${_field?.error.raw()}</span>
+    #{/if}
+#{/form.field}

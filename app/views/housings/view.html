@@ -1,0 +1,127 @@
+#{extends 'main.html' /}
+#{set title:'Logements' /}
+*{#{set 'moreStyles'}
+<link href="@{'/public/css/front/main4a50.css'}" rel="stylesheet"/>
+#{/set}}*
+#{set 'moreScripts'}
+    #{script 'hotel.js'/}
+#{/set}
+
+<div class="element-wrapper">
+    <div class="element-box"">
+        <a class="btn btn-sm btn-primary" href="@{Housings.list()}">
+            Revenir a la liste
+        </a>
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="user-profile compact">
+                    <div class="up-head-w" style="background-image: url(/public/images/menu_bg.jpg)">
+                        <div class="up-social">
+                            <a href="#"><i class="os-icon os-icon-twitter"></i></a>
+                            <a href="#"><i class="os-icon os-icon-facebook"></i></a>
+                        </div>
+                        <div class="up-main-info">
+                            <h2 class="up-header">${housing?.name}</h2>
+                                <h6 class="up-sub-header">${housing?.address}</h6>
+                            </div>
+                            <svg class="decor" width="842px" height="219px" viewBox="0 0 842 219"
+                                 preserveAspectRatio="xMaxYMax meet" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g transform="translate(-381.000000, -362.000000)" fill="#FFFFFF">
+                                    <path class="decor-path"
+                                          d="M1223,362 L1223,581 L381,581 C868.912802,575.666667 1149.57947,502.666667 1223,362 Z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="up-controls">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="value-pair">
+                                        <div class="label">Status:</div>
+                                        <div class="value badge badge-pill badge-success">ACTIF</div>
+                                    </div>
+                                    <div class="value-pair">
+                                        <div class="label">Partenaire:</div>
+                                    #{if housing?.deal}
+                                        <div class="value badge badge-pill badge-success">OUI</div>
+                                    #{/if}
+                                    #{else}
+                                        <div class="value badge badge-pill badge-info">NON</div>
+                                    #{/else}
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 text-right">
+                                    <!--                                    <a class="btn btn-primary btn-sm" id="send-fax">
+                                                                            <i class="os-icon os-icon-email-forward"></i>
+                                                                            <span>Fax</span>
+                                                                        </a>
+                                                                        <a class="btn btn-primary btn-sm" id="send-email">
+                                                                            <i class="os-icon os-icon-email-forward"></i>
+                                                                            <span>Email</span>
+                                                                        </a>
+                                                                        <a class="btn btn-primary btn-sm" href="#" id="delete">
+                                                                            <i class="os-icon os-icon-close"></i>
+                                                                            <span>Supprimer</span>
+                                                                        </a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="element-wrapper">
+                        <h6 class="element-header">Details sur l'hotel</h6>
+                        <div class="element-box-tp">
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <ul style="list-style: none;">
+                                        <li>Ville: <strong>${housing?.city}</strong></li>
+                                        <li>Adresse: <strong>${housing?.address}</strong></li>
+                                        <li>Adresse 2: <strong>${housing?.secondAddress}</strong></li>
+                                        <li>Code Postal: <strong>${housing?.postalCode}</strong></li>
+                                        <li>Telephone: <strong>${housing?.tel}</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6">
+                                    <ul style="list-style: none;">
+                                        <li>Fax: <strong>${housing?.fax}</strong></li>
+                                        <li>Email: <strong>${housing?.email}</strong></li>
+                                        <li>Site web: <strong>${housing?.website}</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="element-wrapper">
+                        <h6 class="element-header">Chambres</h6>
+                        <div class="element-box-tp">
+                            <ul style="list-style: none;">
+                            #{list housing?.rooms, as:"room"}
+                                <li>${room.roomTypeName} | Prix : ${room.price} | Nombre de chambres ; ${room.number}</li>
+                            #{/list}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="element-wrapper">
+                        <h6 class="element-header">Proximités</h6>
+                        <div class="element-box-tp">
+                            <ul style="list-style: none;">
+                            #{list housing?.proximitySummary, as:"proximitySummary"}
+                                <li>${proximitySummary.proximity.label} </li>
+                            #{/list}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="element-wrapper">
+                        <h6 class="element-header">Observation</h6>
+                        <div class="element-box-tp">
+                            <ul style="list-style: none;">
+                                <li>${housing.observation}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

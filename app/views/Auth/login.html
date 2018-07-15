@@ -1,0 +1,40 @@
+#{extends 'mainlogin.html' /}
+#{set title:'Yepado' /}
+
+<div class="all-wrapper menu-side with-pattern">
+    <div class="auth-box-w">
+        <div class="logo-w">
+            <a href="#">
+                <img alt="" src="@{'/public/images/logo.png'}"  height="100" width="100">
+            </a>
+        </div>
+        <h4 class="auth-header">Connectez vous</h4>
+
+        <form role="form" action="@{Auth.authenticate()}" method="POST" accept-charset="utf-8">
+        #{if flash.error}
+            <div class="alert alert-danger" role="alert">
+                <strong>Oups !</strong> ${flash.error}.
+            </div>
+        #{/if}
+            <div class="form-group">
+                <label for="login">Nom d'utilisateur</label>
+                <input class="form-control"
+                       placeholder="Entrez votre nom d'utilisateur"
+                       id="login" name="login"
+                       type="text"
+                       value="${login}" required>
+                <div class="pre-icon os-icon os-icon-user-male-circle"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input class="form-control" placeholder="Entrez votre mot de passe"
+                       id="password" name="password" type="password" required>
+                <div class="pre-icon os-icon os-icon-fingerprint"></div>
+            </div>
+            <div class="buttons-w">
+                <button class="btn btn-primary">Se connecter</button>
+                <a href="#">Mot de passe oublié ?</a>
+            </div>
+        </form>
+    </div>
+</div>

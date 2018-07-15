@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>#{get 'title' /}</title>
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- END META -->
+    <!-- BEGIN STYLESHEETS -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet'
+          type='text/css'/>
+    <link type="text/css" rel="stylesheet" href="@{'/public/stylesheets/theme-5/bootstrap.css'}"/>
+    <link type="text/css" rel="stylesheet" href="@{'/public/stylesheets/theme-5/materialadmin.css'}"/>
+    <link type="text/css" rel="stylesheet" href="@{'/public/stylesheets/theme-5/font-awesome.min.css'}"/>
+    <link type="text/css" rel="stylesheet"
+          href="@{'/public/stylesheets/theme-5/material-design-iconic-font.min.css'}"/>
+
+    #{get 'moreStyles' /}
+    <!-- END STYLESHEETS -->
+    <link href="/public/stylesheets/bootstrap-datetimepicker.min.css" rel="stylesheet" >
+    <!-- BEGIN DATATABLES -->
+    <link type="text/css" rel="stylesheet"
+          href="@{'/public/javascripts/libs/DataTables/datatables.min.css'}"/>
+    <link type="text/css" rel="stylesheet"
+          href="@{'public/stylesheets/theme-5/libs/bootstrap-multiselect/bootstrap-multiselect.css'}"/>
+    <!--END DATATABLES -->
+    #{stylesheet 'theme-5/libs/toastr/toastr.css' /}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="@{'/public/javascripts/libs/utils/html5shiv.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/libs/utils/respond.min.js'}"></script>
+    <![endif]-->
+    <script src="@{'/public/javascripts/libs/jquery/jquery-1.11.2.min.js'}"></script>
+    <style>
+        #loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #1fb5f6; /* Blue */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            position: relative;
+            left: 40%;
+        }
+
+        #vloader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #1fb5f6; /* Blue */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            position: relative;
+            left: 40%;
+        }
+
+        #vfloader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #1fb5f6; /* Blue */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+            position: relative;
+            left: 40%;
+        }
+
+        @keyframes spin {
+
+        0% {
+            transform: rotate(0deg)
+        ;
+        }
+        100% {
+            transform: rotate(360deg)
+        ;
+        }
+        }
+    </style>
+</head>
+<body class="menubar-hoverable header-fixed ">
+
+<!-- BEGIN HEADER-->
+<header id="header" class="header-inverse">
+    <div class="headerbar">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="headerbar-left">
+            <ul class="header-nav header-nav-options">
+                <li class="header-nav-brand">
+                    <div class="brand-holder">
+                        <a href="#">
+                            <span class="text-lg text-bold text-primary">#{get 'title' /}</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="headerbar-right">
+            <ul class="header-nav header-nav-profile">
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+                        <span class="profile-info">
+                            <img src="@{'/public/images/avatar1.jpg'}" alt=""/>
+                        ${authAccount}
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animation-dock">
+                        <li class="dropdown-header">Infos</li>
+                        *{<li>}*
+                            *{<a href="#">${poste}</a>}*
+                        *{</li>}*
+                        <li class="dropdown-header">Actions</li>
+                        <li>
+                            <a href="@{Auth.logout()}">
+                                <i class="fa fa-fw fa-power-off text-danger"></i> Deconnexion
+                            </a>
+                        </li>
+                    </ul><!--end .dropdown-menu -->
+                </li><!--end .dropdown -->
+            </ul><!--end .header-nav-profile -->
+        </div><!--end #header-navbar-collapse -->
+    </div>
+</header>
+<!-- END HEADER-->
+
+<!-- BEGIN BASE-->
+<div id="base">
+
+    <!-- BEGIN OFFCANVAS LEFT -->
+    <div class="offcanvas">
+    </div><!--end .offcanvas-->
+    <!-- END OFFCANVAS LEFT -->
+
+#{doLayout /}
+
+    <!-- BEGIN MENUBAR-->
+    <div id="menubar" class="header-inverse">
+        <div class="menubar-fixed-panel">
+            <div>
+                <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar"
+                   href="javascript:void(0);">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <div class="expanded">
+                <a href="#">
+                    <span class="text-lg text-bold text-primary ">#{get 'title' /}</span>
+                </a>
+            </div>
+        </div>
+        <div class="menubar-scroll-panel">
+
+            <!-- BEGIN MAIN MENU -->
+            <ul id="main-menu" class="gui-controls">
+
+                <!-- BEGIN DASHBOARD -->
+                <li>
+                    <a href="@{Application.index()}" id="menu-item-home">
+                        <div class="gui-icon"><i class="md md-home"></i></div>
+                        <span class="title">Tableau de bord</span>
+                    </a>
+                </li><!--end /menu-li -->
+                <!-- END DASHBOARD -->
+
+
+
+
+                <li>
+                    <a href="@{Events.list()}" id="menu-item-users">
+                        <div class="gui-icon"><i class="md md-account-circle"></i></div>
+                        <span class="title">Events</span>
+                    </a>
+                </li>
+
+
+                <li class="gui-folder" id="menu-cont-parameters">
+                    <a>
+                        <div class="gui-icon"><i class="md md-settings-applications"></i></div>
+                        <span class="title">Paramètres</span>
+                    </a>
+                    <!--start submenu -->
+                    <ul>
+
+                        <li id="menu-li-cproduct">
+                            <a href="@{EventTypes.list}" id="menu-item-cproduct">
+                                <span class="title">Types</span>
+                            </a>
+                        </li>
+                        <li id="menu-li-fproduct">
+                            <a href="@{Categories.list}" id="menu-item-fproduct">
+                                <span class="title">Categories</span>
+                            </a>
+                        </li>
+
+                        *{<li id="menu-li-tversion">}*
+                            *{<a href="../versions/view" id="menu-item-tversion">}*
+                                *{<span class="title">Version</span>}*
+                            *{</a>}*
+                        *{</li>}*
+                    </ul><!--end /submenu -->
+                </li>
+
+            </ul><!--end .main-menu -->
+            <!-- END MAIN MENU -->
+
+            <div class="menubar-foot-panel">
+                <small class="no-linebreak hidden-folded">
+                    <span class="opacity-75">Copyright &copy; 2018</span> <strong>Mindz</strong>
+                </small>
+            </div>
+        </div><!--end .menubar-scroll-panel-->
+    </div><!--end #menubar-->
+    <!-- END MENUBAR -->
+
+    <!-- BEGIN OFFCANVAS RIGHT -->
+    <div class="offcanvas">
+    </div><!--end .offcanvas-->
+    <!-- END OFFCANVAS RIGHT -->
+
+</div><!--end #base-->
+<!-- END BASE -->
+
+
+<!-- BEGIN JAVASCRIPT -->
+<script src="@{'/public/javascripts/libs/bootstrap/bootstrap.min.js'}"></script>
+<script src="@{'/public/javascripts/libs/autosize/jquery.autosize.min.js'}"></script>
+<script src="@{'/public/javascripts/libs/nanoscroller/jquery.nanoscroller.min.js'}"></script>
+<script src="@{'/public/javascripts/libs/bootstrap-multiselect/bootstrap-multiselect.js'}"></script>
+<script src="@{'/public/javascripts/libs/moment/moment.min.js'}"></script>
+<script src="@{'/public/javascripts/libs/DataTables/datatables.min.js'}"></script>
+<script src="@{'/public/javascripts/libs/jquery-validation/dist/jquery.validate.min.js'}"></script>
+<script src="@{'/public/javascripts/libs/jquery-validation/dist/additional-methods.min.js'}"></script>
+<script src="@{'/public/javascripts/core/source/App.js'}"></script>
+<script src="@{'/public/javascripts/core/source/AppNavigation.js'}"></script>
+<script src="@{'/public/javascripts/core/source/AppOffcanvas.js'}"></script>
+<script src="@{'/public/javascripts/core/source/AppCard.js'}"></script>
+<script src="@{'/public/javascripts/core/source/AppForm.js'}"></script>
+<script src="@{'/public/javascripts/core/source/AppNavSearch.js'}"></script>
+<script src="@{'/public/javascripts/core/source/AppVendor.js'}"></script>
+<script src="@{'/public/javascripts/main.js'}"></script>
+<script src="@{'/public/javascripts/core/demo/DemoTableDynamic.js'}"></script>
+
+
+*{<script>
+    $(document).ready(function() {
+        $('.timeago').timeago();
+        $('form').live('submit', function() {
+            $(this).find('.btn-primary').button('loading');
+        });
+        $('.btn-danger').live('click', function() {
+            $(this).button('loading');
+        });
+
+    });
+</script>}*
+#{script 'libs/bootstrap-datepicker/bootstrap-datepicker.js'/}
+#{script 'libs/toastr/toastr.js' /}
+#{script 'core/source/AppDatatable.js'/}
+#{get 'moreScripts' /}
+<!-- END JAVASCRIPT -->
+</body>
+</html>

@@ -1,0 +1,44 @@
+#{extends 'main.html' /}
+#{set title:'Liste des logements' /}
+#{set 'moreStyles'}
+<link href="@{'/public/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css'}" rel="stylesheet"/>
+#{/set}
+#{set 'moreScripts'}
+    #{script 'AppDatatable.js'/}
+    #{script 'hotel.js'/}
+    #{script 'hotel2.js'/}
+#{/set}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="controls-above-table">
+            <div class="row">
+                <div class="col-sm-4">
+                    <a class="btn btn-sm btn-primary" href="@{Housings.edit()}">
+                        Ajouter un nouvel logement
+                    </a>
+                    <a class="btn btn-sm btn-success" href="#">
+                        Importer
+                    </a>
+                </div>
+                <div class="col-sm-8"></div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <input type="hidden" id="tableConfig" value="null">
+            <input type="hidden" id="exportPath" value="${exportHotelPath}">
+            <table class="table table-bordered table-lg table-v2 table-striped" id="hotelTable">
+                <thead>
+                <tr>
+                    <th>Intitulé</th>
+                    <th>Adresse</th>
+                    <th>Ville</th>
+                    <th>Code postal</th>
+                    <th>Fax</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>

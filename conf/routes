@@ -1,0 +1,67 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                                     Application.index
+
+GET     /login                                                Auth.login
+POST    /login                                                Auth.authenticate
+GET     /apk/downloads                                        Auth.listApkUpdates
+GET     /reinitialise                                         Auth.reinitialise
+POST    /reinitialise                                         Auth.reinitialisePassword
+POST    /resetpassword                                        Auth.resetPassword
+POST    /api/1/device                                       api.BootServices.device
+POST    /api/1/profile                                       api.BootServices.updateProfile
+
+
+
+GET     /events                                            Events.list
+GET     /events/edit   			                          Events.edit
+GET     /events/{<[0-9]+>id}/edit   			              Events.edit
+GET     /events/{<[0-9]+>id}/view   			              Events.view
+POST    /events/edit                                       Events.update
+POST    /events/fetch/data                                 Events.fetch
+POST    /events/export/data                                Events.export
+GET     /events/{<[0-9]+>id}/generate                      Events.generateFolder
+POST    /events/folder                                     Events.listFiles
+GET     /{<[0-9]+>id}                                       api.BootServices.main
+
+
+GET     /categories                                Categories.list
+GET     /categories/edit   			              Categories.edit
+GET     /categories/{<[0-9]+>id}/edit   			  Categories.edit
+GET     /categories/{<[0-9]+>id}/view   			  Categories.view
+POST    /categories/edit                           Categories.update
+POST    /categories/fetch/data                     Categories.fetch
+POST    /categories/export/data                    Categories.export
+
+GET     /eventTypes                                EventTypes.list
+GET     /eventTypes/edit   			              EventTypes.edit
+GET     /eventTypes/{<[0-9]+>id}/edit   			  EventTypes.edit
+GET     /eventTypes/{<[0-9]+>id}/view   			  EventTypes.view
+POST    /eventTypes/edit                           EventTypes.update
+POST    /eventTypes/fetch/data                     EventTypes.fetch
+POST    /eventTypes/export/data                    EventTypes.export
+
+
+# API
+POST	/api/1/auth								              api.Auth.authenticate
+POST	/api/1/auth/password/forgot		                      api.Auth.forgetPassword
+POST	/api/1/auth/password/reset		                      api.Auth.resetPassword
+
+
+POST	/api/1/datas            		                      api.BootServices.getDataFromMobileApp
+POST    /api/1/create                                         api.BootServices.createEvent
+POST    /api/1/attend                                          api.BootServices.attendEvent
+POST    /api/1/all                                             api.BootServices.getAllEvents
+
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

@@ -1,0 +1,7 @@
+<div class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    ${messages.get(_alertText).raw()} 
+    #{if _href}
+    <a href="&{_href}" class="alert-link">${messages.get(_alertLinkText).raw()}</a>.
+    #{/if}
+</div>

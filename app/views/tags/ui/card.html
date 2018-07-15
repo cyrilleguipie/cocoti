@@ -1,0 +1,24 @@
+<div class="card card-bordered style-primary" style="margin-bottom: 0">
+    <div class="card-head">
+        <div class="tools">
+            <div class="btn-group">
+                <a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+            </div>
+        </div>
+        <header>${_title}</header>
+    </div><!--end .card-head -->
+    <div class="card-body style-default-bright">
+        <div class="row">
+        #{doBody /}
+        </div>
+        <br>
+
+        <div class="card-actionbar">
+            <div class="card-actionbar-row">
+                <button type="submit" class="btn btn-flat btn-primary ink-reaction">${_actionLabel}
+                </button>
+            </div>
+        </div>
+    </div><!--end .card-body -->
+</div><!--end .card -->
+<em class="text-caption">${_cardSummary}</em>

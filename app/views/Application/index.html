@@ -1,0 +1,114 @@
+#{extends 'main.html' /}
+#{set title:'Tableau de bord' /}
+#{set 'moreScripts'}
+<script type="text/javascript">
+
+
+    $('#menu-item-home').attr('class', 'active');
+
+</script>
+#{/set}
+
+<!-- BEGIN CONTENT-->
+<div id="content" style="background-color : #e6e5e5 !important">
+    <section>
+        <div class="section-body">
+            <div class="row">
+
+                <!-- BEGIN ALERT - TIME ON SITE -->
+                <div class="col-md-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-body no-padding">
+                            <div class="alert alert-callout alert-danger no-margin">
+                                <h1 class="pull-right text-danger"><i class="md md-assignment"></i></h1>
+                                <strong class="text-xl" id="ordC">${eventCount}</strong><br/>
+                                <span class="opacity-50">Total evenements</span>
+                            </div>
+                        </div><!--end .card-body -->
+                    </div><!--end .card -->
+                </div><!--end .col -->
+                <!-- END ALERT - TIME ON SITE -->
+
+                <!-- BEGIN ALERT - TIME ON SITE -->
+                <div class="col-md-6 col-sm-6">
+                    <div class="card">
+                        <div class="card-body no-padding">
+                            <div class="alert alert-callout alert-danger no-margin">
+                                <h1 class="pull-right text-danger"><i class="md md-assessment"></i></h1>
+                                <strong class="text-xl" id="selC">${userCount}</strong><br/>
+                                <span class="opacity-50">Total utilisateurs</span>
+                            </div>
+                        </div><!--end .card-body -->
+                    </div><!--end .card -->
+                </div><!--end .col -->
+                <!-- END ALERT - TIME ON SITE -->
+                <!-- BEGIN ALERT - TIME ON SITE -->
+
+
+            </div><!--end .row -->
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-head">
+                            <header>Events</header>
+                            <div class="tools hidden-md">
+                                <a class="btn btn-icon-toggle btn-close">
+                                    <!-- <i class="md md-close"></i> -->
+                                </a>
+                            </div>
+                        </div><!--end .card-head -->
+                        <div class="card-body no-padding height-9 scroll">
+                            <ul class="list divider-full-bleed">
+                            #{list events}
+                                <li class="tile">
+                                    <div class="tile-content">
+                                        <div class="tile-icon">
+                                            <img src="@{'/public/images/avatar9.jpg'}" alt=""/>
+                                        </div>
+                                        <div class="tile-text">${_?.title}</div>
+                                    </div>
+                                </li>
+                            #{/list}
+                            </ul>
+                        </div><!--end .card-body -->
+                    </div><!--end .card -->
+                </div><!--end .col -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-head">
+                            <header>Users</header>
+                            <div class="tools hidden-md">
+                                <a class="btn btn-icon-toggle btn-close">
+                                    <!-- <i class="md md-close"></i> -->
+                                </a>
+                            </div>
+                        </div><!--end .card-head -->
+                        <div class="card-body no-padding height-9 scroll">
+                            <ul class="list divider-full-bleed">
+                            #{list users}
+                                <li class="tile">
+                                    <div class="tile-content">
+                                        <div class="tile-icon">
+                                            <img src="@{'/public/images/avatar9.jpg'}" alt=""/>
+                                        </div>
+                                        <div class="tile-text">${_?.fullname}</div>
+                                    </div>
+                                </li>
+                            #{/list}
+                            </ul>
+                        </div><!--end .card-body -->
+                    </div><!--end .card -->
+                </div><!--end .col -->
+                <!-- END NEW REGISTRATIONS -->
+
+                <!-- BEGIN NEW REGISTRATIONS -->
+
+                <!-- END NEW REGISTRATIONS -->
+
+
+            </div><!--end .row -->
+        </div><!--end .section-body -->
+    </section>
+</div><!--end #content-->
+<!-- END CONTENT -->

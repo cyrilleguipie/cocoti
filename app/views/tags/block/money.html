@@ -1,0 +1,8 @@
+#{if _amount == 0}
+    -
+#{/if}
+#{else}
+    <span class="${_big == true ? 'big' : ''} label label-${_amount < 0 ? 'important' : (_class != null ? _class : 'info')}">
+        ${_amount?.format("####,### FCFA")}
+    </span>
+#{/else}

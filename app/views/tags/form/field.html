@@ -1,0 +1,21 @@
+#{if _type == 'hidden'}
+    #{doBody /}
+#{/if}
+#{else}
+<div class="form-group ${_field?.error == null ? '' : 'error' }" id = '${_field?.id}'>
+    <label for="${_field?.id}">
+        #{if _label}
+            ${messages.get(_label).raw()}
+        #{/if}
+    </label>
+        #{doBody /}
+        #{if _field?.error}
+            <span class="help-inline">${_field?.error.raw()}</span>
+         #{/if}
+        #{if _help}
+            <span class="help-block">
+                &{_help}
+            </span>
+        #{/if}
+  </div>
+#{/else}

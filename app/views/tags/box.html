@@ -1,0 +1,13 @@
+<div class="box box-default">
+    <div class="row box-header with-border">
+    #{ifnot _updateMode}
+        <button class="col-sm-12 btn btn-primary ink-reaction" data-toggle="modal"
+                data-target="#${_modalId}">
+        ${messages.get("common.button.add")}
+        </button>
+    #{/ifnot}
+    </div><!-- /.box-header -->
+    <div class="box-body">
+    #{doBody /}
+    </div><!-- /.box-body -->
+</div><!-- /.

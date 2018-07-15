@@ -1,0 +1,9 @@
+<div class="panel panel-back noti-box">
+   <span class="icon-box ${_bgcolor != null ? _bgcolor : 'bg-color-grey' } set-icon">
+       <i class="${_icon != null ? _icon : '' }"></i>
+   </span>
+   <div class="text-box">
+       <p class="main-text">${messages.get(_value).raw()}</p>
+       <p class="text-muted">${messages.get(_title).raw()}</p>
+   </div>
+</div>

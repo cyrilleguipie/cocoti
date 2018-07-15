@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="play-deadbolt">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/modules/deadbolt-1.5.1/lib/play-deadbolt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

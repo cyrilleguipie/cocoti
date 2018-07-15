@@ -1,0 +1,8 @@
+#{form.field field : _field, label : _label,  help : _help}
+    #{select _field.name, items:_items, valueProperty : _valueProperty, labelProperty : _labelProperty, value: (_value ? _value : _field.value), id: _field.id, class: (_class ? _class : 'form-control')}
+        <option value="0">---Selection---</option>
+        #{if _emptyOptionText}
+            <option value="${_emptyOptionValue}">${_emptyOptionText}</option>
+        #{/if}
+    #{/select}
+#{/form.field}

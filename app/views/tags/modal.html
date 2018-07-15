@@ -1,0 +1,49 @@
+#{if _trigger == 'link'}
+<a id="${_id}" class="${_aclass} btn btn-flat btn-accent ink-reaction"
+   style="color: #a23135 !important;"
+   data-toggle="modal" data-target="#${_modalId}" data-backdrop="static" data-keyboard="false">
+    <i class="${_iclass != null ? _iclass : 'fa fa-share' }"></i>
+    <span>${messages.get(_label).raw()}</span>
+</a>
+#{/if}
+#{else}
+<button type="button" class="btn ink-reaction btn-raised btn-primary ${_aclass}"
+        data-toggle="modal" data-target="#${_modalId}" data-backdrop="static" data-keyboard="false"
+        style="${_styleBtn != null ? _styleBtn : 'position: absolute; right: 385px; top: 25px;' }">
+${_btntitlepage != null ? _btntitlepage : 'Ajouter'}
+</button>
+#{/else}
+
+<!-- BEGIN SIMPLE MODAL MARKUP -->
+<div class="modal fade" id="${_modalId}" tabindex="-1" role="dialog" aria-labelledby="${_modalId}Label"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog ${_modalCl}">
+        <div class="modal-content ${_modalClass != null ? _modalClass : 'mod' }">
+            #{if _modalTitle}
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="${_modalId}Label">${messages.get(_modalTitle).raw()}</h4>
+            </div>
+            #{/if}
+            <div class="modal-body" id="${_modalContentId}">
+                #{doBody /}
+            </div>
+            <div class="modal-footer">
+                #{if _btnUpdate}
+                <button type="${_btntype != null ? _btntype : 'button'}" class="btn btn-default update">
+                    ${messages.get(_btnUpdate).raw()}
+                </button>
+                #{/if}
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Fermer</button>
+                #{if _btnTitle}
+                <button type="${_btntype != null ? _btntype : 'button'}" class="${_btnclass != null ? _btnclass : 'btn btn-success'}" id="${_btnId}">
+                    ${messages.get(_btnTitle).raw()}
+                </button>
+                #{/if}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END SIMPLE MODAL MARKUP -->
+
+

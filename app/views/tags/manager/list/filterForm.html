@@ -1,0 +1,26 @@
+#{form @list(), class : 'form-inline'}
+
+<div class="form-group">
+    <input type="text" class="form-control"  placeholder="${(_placeholder ? _placeholder : 'Mot-cl&eacute;').raw()}" name="k" value="${_k}" />
+</div>
+<div class="form-group">
+    #{doBody /}
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-primary" title="&{'search'}">
+        <i class="fa fa-search"> </i> Rechercher
+    </button> - <a href="@{list()}" title="&{'reset_filter'}"> <i class="fa fa-times"> </i> Réinitialiser  </a>
+</div>
+
+
+<table>
+    <tr>
+        <td>
+        </td>
+        <td> </td>
+        <td>
+        </td>
+    </tr>
+</table>
+
+#{/form}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/acl/acl.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/acl/acl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/content-types/content-types.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/content-types/content-types.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/deadbolt-1.5.1.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/deadbolt-1.5.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/integration-with-secure/integration-with-secure.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/integration-with-secure/integration-with-secure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/restriction-samples/restriction-samples.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/restriction-samples/restriction-samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/role-holder-not-present/role-holder-not-present.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/role-holder-not-present/role-holder-not-present.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/role-holder-present/role-holder-present.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/role-holder-present/role-holder-present.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/unrestricted-samples/unrestricted-samples.iml" filepath="$PROJECT_DIR$/modules/deadbolt-1.5.1/samples-and-tests/unrestricted-samples/unrestricted-samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yepado_web.iml" filepath="$PROJECT_DIR$/yepado_web.iml" />
+    </modules>
+  </component>
+</project>

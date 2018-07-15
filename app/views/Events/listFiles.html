@@ -1,0 +1,17 @@
+#{if files == 'empty'}
+<span class="text-lg text-bold text-primary">Aucune element disponible </span>
+#{/if}
+#{else }
+<ul class="list divider-full-bleed" id="apk-list-container">
+    #{list files}
+        <li class="tile">
+            <div class="tile-content">
+                <div class="tile-icon"><i class="fa fa-folder"></i></div>
+                <div class="tile-text">
+                    <a href="../../${_}">${_}</a>
+                </div>
+            </div>
+        </li>
+    #{/list}
+</ul>
+#{/else}

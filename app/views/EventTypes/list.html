@@ -1,0 +1,257 @@
+#{extends 'main.html' /}
+#{set title:'Yepado' /}
+#{set 'moreScripts'}
+<script>
+    $('.boutiques').attr('class', 'active');
+</script>
+#{/set}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Liste des types d'evenement
+            <small></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active">
+            </li>
+        </ol>
+
+        </br>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-lg-10">
+
+            </div>
+            <div class="col-lg-2">
+
+                #{modal modalId : 'addModal', iclass : 'glyphicon glyphicon-edit', label : 'Ajouter', modalClass :
+                'addMod', modalTitle : 'Types', modalContentId : "addmodone", btnId : 'add-modifs', btnTitle :
+                'Ajouter', aclass : 'addM', btnclass : 'btn btn-info'}
+                #{include 'EventTypes/edit.html' /}
+                #{/modal}
+
+            </div>
+        </div>
+
+        <br/><br/><br/><br/><br/>
+
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="box">
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <input type="hidden" name="result_id" id="result_id" value="${results}"/>
+                            *{<input type="hidden" name="countries_id" id="countries_id" value="${countries}"/>}*
+                            *{<input type="hidden" name="areas_id" id="areas_id" value="${areas}"/>}*
+                            #{list result?.objects}
+                            <input type="hidden" name="object_id" id="obj_id" value="${_.id}"/>
+                            <tr>
+                                <td> ${_.title}</td>
+                                
+                                *{<td> ${_.countryName}</td>}*
+                                <td>
+
+                                    <a class="panel-collapse collapses ediM" href="#addModal" data-toggle="modal"
+                                       data-target="#addModal" id="${_.id}" style="color : #dd4b39;">
+                                        <i class="glyphicon glyphicon-edit"></i>
+                                        <span>Modifier</span>
+                                    </a>
+
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                    #{modal trigger : 'link', modalId : 'viewModal', id : _.id, iclass : 'glyphicon glyphicon-eye-open', label : 'Voir', modalClass : 'viewMod', modalTitle : 'Details Type', modalContentId : "viewmodone", aclass : 'vieM', btnId : 'delete-modifs'}
+                                    #{include 'EventTypes/view.html' /}
+                                    #{/modal}
+
+                                </td>
+                            </tr>
+                            #{/list}
+                            </tbody>
+
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+            </div>
+        </div>
+
+        <!-- Your Page Content Here -->
+
+    </section><!-- /.content -->
+</div><!-- /.content-wrapper -->
+
+
+<script type="text/javascript">
+
+      var _results = $.parseJSON($("#result_id").val());
+      // var _countries = $.parseJSON($("#countries_id").val());
+      // var _areas = $.parseJSON($("#areas_id").val());
+      var _objects = _results.objects;
+
+      // console.log(_objects);
+      // console.log(_countries);
+      // console.log(_areas);
+
+      //Add Item in a Modal (JQuery Function)
+      $(".addM").click(function(){
+        //alert("Ok");
+        $Modal        = $("#addModal");
+        $ModalContent = $Modal.find("#addmodone");
+
+        var object = new Object();
+
+        $("#add-modifs").click(function(){
+
+        object.title = $ModalContent.find( "input[name='object.title']" ).val();
+        // var lat = $ModalContent.find( "input[name='object.lat']" ).val();
+        // object.lat = parseFloat(lat);
+        // var lng = $ModalContent.find( "input[name='object.lng']" ).val();
+        // object.lng = parseFloat(lng);
+        // countryid = $ModalContent.find( "select[name='object.country']" ).val();
+        // areaid = $ModalContent.find( "select[name='object.area']" ).val();
+        //
+        //
+
+
+
+        console.log(object);
+            if(object != null){
+                $.ajax({
+
+                    url     : "/backend/eventTypes/edit",
+                    type    : 'post',
+                    data    :  {
+                        object        : object
+
+                    },
+                    success : function() {
+                        window.location.replace("/backend/eventTypes");
+                    }
+                });
+            }
+
+          });
+
+      });
+
+      //Edit Item in a Modal (JQuery Function)
+      $(".ediM").click(function(){
+        //alert("Ok");
+        $Modal        = $("#addModal");
+        $ModalContent = $Modal.find("#addmodone");
+
+        var obj_id = $( this ).attr("id");
+        console.log(obj_id);
+        for(var i = 0; i < _objects.length; i++){
+
+        if(_objects[i].id == obj_id){
+              var object = _objects[i];
+              console.log(_objects[i]);
+              }
+        }
+
+        $ModalContent.find( "input[name='object.title']" ).val(object.title);
+
+
+        $("#add-modifs").click(function(){
+
+        object.title = $ModalContent.find( "input[name='object.title']" ).val();
+        // var lat = $ModalContent.find( "input[name='object.lat']" ).val();
+        // object.lat = parseFloat(lat);
+        // var lng = $ModalContent.find( "input[name='object.lng']" ).val();
+        // object.lng = parseFloat(lng);
+        // countryid = $ModalContent.find( "select[name='object.country']" ).val();
+        // areaid = $ModalContent.find( "select[name='object.area']" ).val();
+
+        // console.log(_countries);
+        // console.log(countryid);
+        //
+        // for(var i = 0; i < _countries.length; i++){
+        //
+        //   if(_countries[i].id == countryid){
+        //         object.country = _countries[i];
+        //         //console.log(country);
+        //     }
+        // }
+        //
+        // for(var i = 0; i < _areas.length; i++){
+        //
+        //   if(_areas[i].id == areaid){
+        //         object.area = _areas[i];
+        //         //console.log(country);
+        //     }
+        // }
+            if(object != null){
+                $.ajax({
+
+                    url     : "/backend/eventTypes/edit",
+                    type    : 'post',
+                    data    :  {
+                        object        : object
+
+                    },
+                    success : function() {
+                        window.location.replace("/backend/eventTypes");
+                    }
+                });
+            }
+
+          });
+
+      });
+
+        //View Item in a Modal (JQuery Function)
+        $(".vieM").click(function(){
+        //alert("Ok");
+        $Modal        = $("#viewModal");
+        $ModalContent = $Modal.find("#viewmodone");
+
+        var obj_id = $( this ).attr("id");
+        console.log(obj_id);
+        for(var i = 0; i < _objects.length; i++){
+
+        if(_objects[i].id == obj_id){
+              var object = _objects[i];
+              console.log(object);
+                }
+        }
+
+          $ModalContent.find( "#label" ).html( object.title);
+
+
+        $("#delete-modifs").click(function(){
+
+        object.title = $ModalContent.find( "input[name='object.title']" ).val();
+            $.ajax({
+
+            url     : "/backend/eventTypes/"+obj_id+"/delete",
+            type    : 'post',
+            data    :  {
+              id        : obj_id
+
+         },
+            success : function() {
+              window.location.replace("/backend/eventTypes");
+             }
+            });
+
+          });
+
+      });
+
+
+</script>
